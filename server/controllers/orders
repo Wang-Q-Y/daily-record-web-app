@@ -1,0 +1,45 @@
+const express = require('express');
+const router = express.Router();
+const Order = require('../models/order');
+
+
+
+//Register  
+router.post('/api/order', async(req, res)=>{
+    const order =await Order.create({
+        order_Date:req.body.order_Date,
+        order_number:req.body.order_number,
+        order_amount:req.body.order_amount,
+        price:req.body.price
+    })
+      res.send(order)
+    
+})
+
+
+
+router.get("/api/orders", async(req, res)=>{
+    Order.find((err, order) => {
+        if(err) {return next(err);}
+        res.json({"orders": order});
+    });
+
+});
+
+router.patch('/', async (req, res, next) => {
+    try {
+		var existingOrder = await Order.findOne({ _id: req.query.order_id });
+        var newOrder = req.body;
+        existingOrder.order_Date = newOrder.order_Date;
+        existingOrder.order_number = newOrder.order_number;
+        existingOrder.order_amount = newOrder.order_amount;
+        existingOrder.price = newOrder.price;
+
+        await existingOrder.save();
+        res.json(existingOrder);
+	} catch {
+		res.status(404);
+		res.send({ error: "Order doesn't exist" });
+	}
+});
+module.exports = router

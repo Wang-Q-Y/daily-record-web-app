@@ -4,6 +4,16 @@ var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
+var userRouter = require('./controllers/users');
+var orderRouter = require('./controllers/orders');
+var passport = require('passport');
+//var LocalStratgy = require('passport-local').Strategy;
+var session=require('express-session')
+var bcrypt = require('bcryptjs');
+
+
+
+
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
@@ -30,15 +40,54 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+
+//***
+
+// app.use(passport.initialize())
+// app.use(passport.session())
+
+
+// passport.use(new LocalStratgy(
+//     function(username, password, done) {
+//       User.findOne({ name: username }, function (err, user) {
+//         if (err) { return done(err); }
+//         if (!user) { return done(null, false); }
+//         if (user.password !== password) { return done(null, false); 
+//         }
+//         return done(null, user);
+//       });
+//     }
+//   ));
+
+//   passport.serializeUser(function(user, done) {
+//     done(null, user.id);
+//   });
+  
+//   passport.deserializeUser(function(id, done) {
+//     User.findById(id, function (err, user) {
+//       done(err, user);
+//     });
+//   });
+
+
+
+
 // Import routes
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
 
+app.use(userRouter)
+app.use(orderRouter)
+
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
 });
+
+// *** Registering routes 
+//app.use("/api/users", userRouter);
+
 
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
@@ -73,3 +122,10 @@ app.listen(port, function(err) {
 });
 
 module.exports = app;
+
+
+
+
+
+
+

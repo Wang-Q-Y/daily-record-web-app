@@ -1,0 +1,18 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var orderSchema = new Schema({
+    order_Date: { type: String,required:true },
+
+    order_number:{type:String,required:true} ,
+    price: { type: Number ,required:true},
+    
+    order_amount:{type:Number,required:true}
+
+    
+
+});
+
+//var orders=mongoose.model('user',orders );
+
+module.exports = mongoose.model('Order', orderSchema);

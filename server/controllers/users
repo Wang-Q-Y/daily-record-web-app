@@ -1,0 +1,143 @@
+const express = require('express');
+const Joi=require('joi')
+const router = express.Router();
+const User = require('../models/user');
+var bcrypt = require('bcryptjs');
+
+
+
+const createUser = Joi.object({
+    name:Joi.string()
+    .alphanum()
+    .max(50)
+    .required(),
+    password: Joi.string()
+        .alphanum()
+        .max(20)
+        .required(),
+    email: Joi.string()
+        
+        .required()
+});
+
+const updateUser = Joi.object({
+    name: Joi.string()
+    .alphanum()
+    .max(50)
+    .required(),
+    password: Joi.string()
+        .alphanum()
+        .max(20)
+        .required(),
+    email: Joi.string()
+        
+    
+});
+//Register  User
+// router.post('/api/register', async(req, res)=>{
+//     const user =await User.create({
+//       name:req.body.name,
+//       password:req.body.password,
+//       email:req.body.email,
+//      
+//     })
+//       res.send(user)
+    
+// })
+
+//Register a new user
+router.post('/api/register', function(req, res, next){
+    const {error} = createUser.validate(req.body)
+    if(error){
+        return res.status(400).json({"message": error.details[0].message})
+    }
+    var user = new User(req.body);
+    user.save(function(err, user) {
+        if (err) { return next(err); }
+        res.status(201).json(user);
+    })
+})
+
+
+//Login User
+router.post('/api/login', async(req, res)=>{
+    const user =await User.findOne({
+      name:req.body.name  })
+      if(!user){
+          return res.status(422).send({
+              message:'User does not exist'
+          })
+      }
+      const isPasswordVaild=require('bcrypt').compareSync(
+          req.body.password,
+          user.password
+      )
+         if(!isPasswordVaild){
+             return res.status(422).send({
+                 message:'Invalid password'
+             })
+         }
+      res.send(user)
+     
+    
+})
+
+
+
+
+//get all users
+router.get('/api/users', function(req, res, next) {
+    User.find(function(err, user) {
+        if (err) { return next(err); }
+        res.json({'users': user });
+    });
+});
+
+
+//get a user
+router.get('/api/user/:id', function(req, res, next) {
+    var id = req.params.id;
+    User.findById(id, function(err, user) {
+        if (err) { return next(err); }
+        if (user === null) {
+            return res.status(404).json({'message': 'User not found!'});
+        }
+        res.json(user);
+    });
+});
+
+
+router.patch('/api/user/:id', (req, res, next) => {
+    const {error} = updateUser.validate(req.body)
+    if(error){
+        return res.status(400).json({"message": error.details[0].message})
+    }
+    
+    User.findById(req.params.id, async (err, user) => {
+        if(err) {return next(err);}
+        if(user == null){
+            return res.status(404).json({"message": "User not found"});
+        }
+        var {name, password,email } = user;
+        user.name = (req.body.name || name);
+        user.password = (req.body.password || password);
+        user.email = (req.body.email || email);
+       await user.save()
+        res.json(user);
+    });
+});
+
+//detele a user
+router.delete('/api/user/:id', function(req, res, next) {
+    var id = req.params.id;
+    User.findOneAndDelete({_id: id}, function(err, user) {
+        if (err) { return next(err); }
+        if (user === null) {
+            return res.status(404).json({'message': 'User not found'});
+        }
+        res.json(user);
+    });
+});
+
+
+module.exports = router;
