@@ -2,21 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Order = require('../models/order');
 
-
-
-router.post("/api/order", function (req, res, next) {
-    var order = new Order(req.body);
-    company.save(function (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      console.log("New order ", order.name, "created");
-      return res.status(201).json(order);
-    });
-  });
-
-
-
 router.get('/api/orders', function (req, res, next) {
 
     Order.find(function (err, orders) {
