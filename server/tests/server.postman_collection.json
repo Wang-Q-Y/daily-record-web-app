@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "c9bf5610-d281-464c-8fbe-0f74b6a9a01f",
-		"name": "server",
+		"_postman_id": "a6004dac-6934-44c1-89bc-91a2cb7eccfc",
+		"name": "server_tutorial_v2022",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19508166"
+		"_exporter_id": "23152308"
 	},
 	"item": [
 		{
-			"name": "Create an item",
+			"name": "GET /api Copy",
 			"event": [
 				{
 					"listen": "test",
@@ -266,11 +266,66 @@
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
 					{
 						"key": "Content-Type",
 						"value": "application/json",
@@ -279,18 +334,20 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"pam@gmail.com\",\n    \"password\" : \"pam\"\n}"
+					"raw": "{\n  \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/login",
-					"protocol": "http",
+					"raw": "{{host}}/api/login",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
-						"users",
 						"login"
 					]
 				}
@@ -298,31 +355,38 @@
 			"response": []
 		},
 		{
-			"name": "update user",
+			"name": "POST /api/camels Copy",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
+				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PUT",
+				"method": "GET",
 				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
 					{
 						"key": "Content-Type",
 						"value": "application/json",
@@ -330,58 +394,159 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzRkNjVmZjI1ZmQwYzlhYzZmMTE0NjUiLCJpYXQiOjE2NjYwMTY3NzcsImV4cCI6MTY2NjAyMDM3N30.TTZnKD8bNiMtjbPTdWSqC-6XLeN7atmimn_5EJOtkvU",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"jadon@gmail.com\",\n    \"password\": \"jadon\"\n}"
+					"raw": "{\n    \"items\":[10,\"632f5906cae55be5fc757693\"],\n    \"user\":\"632f11fbbe7455d994d3070d\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}",
-					"protocol": "http",
+					"raw": "{{host}}/api/users/verify",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"users",
-						"{{user_id}}"
+						"verify"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get all users",
+			"name": "POST /api/camels Copy 2",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\":[10,\"632f5906cae55be5fc757693\"],\n    \"user\":\"632f11fbbe7455d994d3070d\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:3000/api/users",
-					"protocol": "http",
+					"raw": "{{host}}/api/user/:id",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmNTQzNWYyZGFjMmUyYmViOWY0NDMiLCJpYXQiOjE2NjQwNDYxNDAsImV4cCI6MTY2NDA0OTc0MH0.XDnzSbcfwnczw2wcViG03UzEenhka_V3DKuNhBu8xbQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users",
+					"host": [
+						"{{host}}"
+					],
 					"path": [
 						"api",
 						"users"
@@ -391,24 +556,253 @@
 			"response": []
 		},
 		{
-			"name": "Get a user",
+			"name": "POST /api/camels Copy 3",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123@qq\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
+				"url": {
+					"raw": "{{host}}/api/users/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"sad\",\n    \"price\":\"10000000\",\n    \"category\":\"Burger\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id",
+						"items"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id",
+						"items"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "Burger",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
 				"method": "GET",
 				"header": [
 					{
@@ -465,238 +859,19 @@
 						"type": "text"
 					},
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"items\" : [\n       {\"_id\": \"{{item_id}}\", \"quantity\": 10}\n       \n    ],\n    \"pickUpTime\" : \"At\"\n}\n"
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}",
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get an order",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}/orders/{{order_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}",
-						"orders",
-						"{{order_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get all orders",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}",
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get orders for every user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/orders/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"orders",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete order",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}/orders/{{order_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}",
-						"orders",
-						"{{order_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create a copy order",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							" var jsonData = pm.response.json();",
-							" var orderId = jsonData._id;",
-							" pm.environment.set(\"order_id\", orderId);",
-							"",
-							"",
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200,201);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"items\" : [\n       {\"_id\": \"{{item_id}}\", \"quantity\": 10}\n       \n    ],\n    \"pickUpTime\" : \"At\"\n}\n",
+					"raw": "{\n   \n    \n    \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -704,79 +879,41 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}/orders",
-					"protocol": "http",
+					"raw": "{{host}}/api/items/:id",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}",
-						"orders"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete an item",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/items/{{item_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
 					"path": [
 						"api",
 						"items",
-						"{{item_id}}"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d666d25fd0c9ac6f1146d"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Create a second item",
+			"name": "POST /api/camels Copy 5",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();",
-							" var itemId = jsonData._id;",
-							" pm.environment.set(\"item_id\", itemId);",
-							"",
-							"pm.test(\"Correct status code\", () => {",
-							"  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -784,261 +921,218 @@
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
+				"method": "DELETE",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\" :  \"Burger\",\n    \"price\" : 45\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/items",
-					"protocol": "http",
+					"raw": "{{host}}/api/user/:id",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
-						"items"
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete all items",
+			"name": "POST /api/camels Copy 6",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "DELETE",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Accept",
+						"value": "application/json",
 						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/items",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"items"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "user sign up 2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"var userId = jsonData._id;",
-							"pm.environment.set(\"user_id\", userId);",
-							"",
-							"",
-							"pm.test(\"Correct status code\", () => {",
-							"  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
+					},
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
 						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"robert@gmail.com\",\n    \"password\" : \"robert\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "Screen Shot 2022-09-28 at 23.06.01.png"
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/users/",
-					"protocol": "http",
+					"raw": "{{host}}/api/items/:id",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"api",
-						"users",
-						""
+						"items",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d666d25fd0c9ac6f1146d"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "delete a user",
+			"name": "POST /api/camels Copy 7",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "DELETE",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Accept",
+						"value": "application/json",
 						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete all users",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
+					},
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "Screen Shot 2022-09-28 at 23.06.01.png"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://localhost:3000/api/users",
-					"protocol": "http",
+					"raw": "{{host}}/api/user/:id/items",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
-						"users"
+						"user",
+						":id",
+						"items"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "delete all orders",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/orders/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"orders",
-						""
-					]
-				}
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3000",
+			"type": "string"
 		}
 	]
 }

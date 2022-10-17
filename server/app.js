@@ -4,6 +4,17 @@ var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
+var userRouter = require('./controllers/users');
+require("dotenv").config();
+var itemRouter=require('./controllers/items')
+
+//var LocalStratgy = require('passport-local').Strategy;
+
+var bcrypt = require('bcryptjs');
+
+
+
+
 
 var itemsController = require('./controllers/items');
 var userController = require('./controllers/users');
@@ -37,20 +48,36 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+
+
+
+
+
+
 // Import routes
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
 
+<<<<<<< HEAD
 app.use(itemsController);
 app.use(userController);
 app.use(empController);
 app.use(orderController);
+=======
+app.use(userRouter)
+app.use(itemRouter)
+
+>>>>>>> Qianyuan
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
 });
+
+// *** Registering routes 
+//app.use("/api/users", userRouter);
+
 
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
@@ -85,3 +112,10 @@ app.listen(port, function(err) {
 });
 
 module.exports = app;
+
+
+
+
+
+
+
