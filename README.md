@@ -61,17 +61,17 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-A so-called "life tracker". An app that will help you keep track of your habits, sleep, food, perhaps even finances. The idea is that you are easily able to enter any sort of information about yourself that you'd like to keep track of with some preexisting templates, and then "rate" your mood. After keeping track of different things for a while, you can start noticing patterns and see what positively and negatively affects your mood.
-Perhaps even create some sort of algorithm that will help you notice these patterns?* (Extension, might be too ambitious)
+A simple "user add and delete products", where users can add specific products and delete products after registering and logging in, and users can also modify profiles. Finally the user can log out.
+
 
 ### Pages
 
-* Home: add new entries in your diary, access different menus, "hub" for everything
-* Login/Register: standard email/password/name/unique username, once logged in becomes "My account"
-* My account: lets you set profile picture, add bio (for yourself, I don't think there will be a social aspect (ambition 2?)), wipe diary, delete account
-* Diary: overview of past entries, ability to sort information, search for specific types of information, edit/delete entries
-* Entry creation: dropdown of potential things to add (create new, custom included), text field, comment field, submit/cancel buttons
-* Might be more to come but can't think of anything right now...
+* Login/Register: User input name/password/email to register ,once login jump to "Home" interface
+* Home: The user can add items the Add Items screen (sorted by price) The higher price is at the back), also can delete all items Click on the special item will jump to the item interface
+* Item: view special items
+* User: See basic user information（name and email) and all items added by the user, the user can also delete a particular item
+* Userinfo: User edit profile and log out
+
 
 ### Entity-Relationship (ER) Diagram
 
