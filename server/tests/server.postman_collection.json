@@ -1,17 +1,17 @@
 {
 	"info": {
-		"_postman_id": "f7ee95b5-9cb9-442f-a6a9-42de46138872",
-		"name": "server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "a6004dac-6934-44c1-89bc-91a2cb7eccfc",
+		"name": "server_tutorial_v2022",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23152308"
 	},
 	"item": [
 		{
-			"name": "GET /api",
+			"name": "GET /api Copy",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b58d92ec-5214-450c-adb0-28e068aa71b9",
 						"exec": [
 							""
 						],
@@ -20,7 +20,7 @@
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Accept",
@@ -28,13 +28,785 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{host}}/api",
+					"raw": "{{host}}/api/register",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"api"
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzRkNjVmZjI1ZmQwYzlhYzZmMTE0NjUiLCJpYXQiOjE2NjYwMTY3NzcsImV4cCI6MTY2NjAyMDM3N30.TTZnKD8bNiMtjbPTdWSqC-6XLeN7atmimn_5EJOtkvU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\":[10,\"632f5906cae55be5fc757693\"],\n    \"user\":\"632f11fbbe7455d994d3070d\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/verify",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\":[10,\"632f5906cae55be5fc757693\"],\n    \"user\":\"632f11fbbe7455d994d3070d\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmNTQzNWYyZGFjMmUyYmViOWY0NDMiLCJpYXQiOjE2NjQwNDYxNDAsImV4cCI6MTY2NDA0OTc0MH0.XDnzSbcfwnczw2wcViG03UzEenhka_V3DKuNhBu8xbQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123@qq\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"sad\",\n    \"price\":\"10000000\",\n    \"category\":\"Burger\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id",
+						"items"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id",
+						"items"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "Burger",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \n    \n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/items/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"items",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d666d25fd0c9ac6f1146d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "Screen Shot 2022-09-28 at 23.06.01.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/items/:id",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"items",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d666d25fd0c9ac6f1146d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/camels Copy 7",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzJmMTFmYmJlNzQ1NWQ5OTRkMzA3MGQiLCJpYXQiOjE2NjQwMjk4MjUsImV4cCI6MTY2NDAzMzQyNX0.Jszoe3lKJxR4NJMosIh2VtGbyZIx-a_dGkDg8U4AepU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "Screen Shot 2022-09-28 at 23.06.01.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/api/user/:id/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"user",
+						":id",
+						"items"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "634d65ff25fd0c9ac6f11465"
+						}
 					]
 				}
 			},
@@ -45,7 +817,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "05864cff-5cba-4070-bac3-a59328954ebf",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -55,7 +826,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e9c319be-3306-4fc5-ba34-fcf64391213a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -65,11 +835,9 @@
 	],
 	"variable": [
 		{
-			"id": "cd185905-a834-4211-8030-583d17702534",
 			"key": "host",
 			"value": "http://localhost:3000",
 			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
