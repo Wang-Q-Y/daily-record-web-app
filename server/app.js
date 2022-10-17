@@ -59,16 +59,9 @@ app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
 
-<<<<<<< HEAD
-app.use(itemsController);
-app.use(userController);
-app.use(empController);
-app.use(orderController);
-=======
 app.use(userRouter)
 app.use(itemRouter)
 
->>>>>>> Qianyuan
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
