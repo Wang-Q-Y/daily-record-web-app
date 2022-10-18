@@ -12,15 +12,6 @@ var itemRouter=require('./controllers/items')
 
 var bcrypt = require('bcryptjs');
 
-
-
-
-
-
-
-
-
-
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
 var port = process.env.PORT || 3000;
