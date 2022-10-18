@@ -15,8 +15,4 @@ var itemSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, required: true }
 })
 
-
-
-
-
 module.exports = mongoose.model('Item', itemSchema);

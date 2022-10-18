@@ -10,255 +10,9 @@
 			"name": "GET /api Copy",
 			"event": [
 				{
-					"listen": "test",
+					"listen": "prerequest",
 					"script": {
 						"exec": [
-							" var jsonData = pm.response.json();",
-							" var itemId = jsonData._id;",
-							" pm.environment.set(\"item_id\", itemId);",
-							"",
-							"",
-							"pm.test(\"Correct status code\", () => {",
-							"  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					},
-					{
-						"key": "",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "\n{\n    \"name\" : \"Sandwhich\",\n    \"price\" : 95\n}\n\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/items",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"items"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get item",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/items",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"items"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updat item",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\" : \"Chicken Sandwhich\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/items/{{item_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"items",
-						"{{item_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get all items",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/api/items/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"items",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User sign up",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"var userId = jsonData._id;",
-							"pm.environment.set(\"user_id\", userId);",
-							"",
-							"",
-							"pm.test(\"Correct status code\", () => {",
-							"  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"pam@gmail.com\",\n    \"password\" : \"pam\"\n}"
-				},
-				"url": {
-					"raw": "http://localhost:3000/api/users/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "user log in",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							" var jsonData = pm.response.json();",
-							" var userToken = jsonData.token;",
-							" pm.environment.set(\"user_token\", userToken);",
-							"",
-							"pm.test(\"Correct status code\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -276,7 +30,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"raw": "{\n    \"name\":\"yy\",\n    \"password\":\"12\",\n    \"email\":\"12\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -334,7 +88,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\":\"tt\",\n    \"password\":\"123\",\n    \"email\":\"123\"\n}",
+					"raw": "{\n   \"name\":\"yy\",\n    \"password\":\"12\",\n    \"email\":\"12\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -668,7 +422,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"sad\",\n    \"price\":\"10000000\",\n    \"category\":\"Burger\"\n    \n}",
+					"raw": "{\n    \"name\":\"sad\",\n    \"price\":\"10\",\n    \"category\":\"Burger\"\n    \n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -689,7 +443,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "634d65ff25fd0c9ac6f11465"
+							"value": "634e6b6572120bb03e35acd0"
 						}
 					]
 				}
@@ -806,55 +560,7 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer{{user_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/api/users/{{user_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users",
-						"{{user_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create an order",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							" var jsonData = pm.response.json();",
-							" var orderId = jsonData._id;",
-							" pm.environment.set(\"order_id\", orderId);",
-							"",
-							"",
-							"pm.test(\"Correct status code\", () => {",
-							"  pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
+						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
 					},
@@ -956,7 +662,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "634d65ff25fd0c9ac6f11465"
+							"value": "634e6b6572120bb03e35acd0"
 						}
 					]
 				}
@@ -1017,9 +723,8 @@
 				"url": {
 					"raw": "{{host}}/api/items/:id",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3000",
 					"path": [
 						"api",
 						"items",
@@ -1028,7 +733,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "634d666d25fd0c9ac6f1146d"
+							"value": "634e6baa72120bb03e35acd3"
 						}
 					]
 				}

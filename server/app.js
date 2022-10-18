@@ -58,10 +58,8 @@ app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
 
-
 app.use(userRouter)
 app.use(itemRouter)
-
 
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
