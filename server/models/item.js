@@ -1,14 +1,5 @@
 var mongoose = require('mongoose');
-<<<<<<< HEAD
-var schema = mongoose.schema;
 
-
-var itemSchema = new mongoose.Schema({
-    name: { type: String, required: true},
-    price: {type: Number, required: true},
-   
-});
-=======
 var Schema = mongoose.Schema;
 
 var itemSchema = new Schema({
@@ -25,7 +16,7 @@ var itemSchema = new Schema({
 })
 
 
->>>>>>> Qianyuan
+
 
 
 module.exports = mongoose.model('Item', itemSchema);

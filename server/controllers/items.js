@@ -1,84 +1,103 @@
-var express = require('express');
-var router = express.Router();
-var Item = require('../models/item');
-
-router.post('/api/items',function(req, res, next) {
-    var item = new Item(req.body);
-    item.save(function(err, items) {
-        if (err) { return next(err); }
-       res.json(items)
-    });
-});
+const express = require('express');
+const router = express.Router();
+const Item = require('../models/item');
+const User = require('../models/user')
 
 
-router.get('/api/items', function(req, res, next) {
-    var sort = req.query.sort_by;
-    if(sort) {
-      if(sort == 'price') {
-        Item.find({}).sort('price').exec(function(err, items) { 
-          if (err) { return next(err); }
-          res.json(items);
-        }); 
-      } else {
-        res.status(500);
-         }
-    }
-     else {
-    Item.find(function(err, items) {
-        if (err) { return next(err); }
-        var filter = req.query.name; 
-        if(filter) {
-          res.json(items.filter(function (e) {
-            return filter === e.name;
-        }))
-        } else {
-          res.json({'items': items });
-      }
-    })
-  }
-});
 
 
-router.get('/api/items/:id', function(req, res, next) {
-    Item.findById(req.params.id, function(err, item) {
-        if (err) { return next(err); }
-        if (!item) {
-            return res.status(404).json({'message': 'Item not found!'});
-        }
-        res.json(item);
-    });
-});
 
-router.patch('/api/items/:id' ,function(req, res, next) {
-  Item.findByIdAndUpdate(req.params.id, req.body, {new:true}, function (err, item) {
+
+
+
+//get a item
+router.get('/api/items/:id', function (req, res, next) {
+  Item.findById(req.params.id, function (err, item) {
     if (err) { return next(err); }
     if (!item) {
-        return res.status(404).json({'message': 'Item not found!'});
+      return res.status(404).json({ 'message': 'Item not found!' });
     }
-        res.json(item);
+    res.json(item);
   });
-  
 });
 
-router.delete('/api/items/:id' ,function(req, res, next) {
+
+//delete a item
+router.delete('/api/items/:id', function (req, res, next) {
+
   Item.findByIdAndRemove(req.params.id, req.body, function (err, item) {
     if (err) { return next(err); }
     if (!item) {
-        return res.status(404).json({'message': 'Item not found!'});
+      return res.status(404).json({ 'message': 'Item not found!' });
     }
-        res.json({'message': 'item deleted'});
+    res.json({ 'message': 'item deleted' });
   });
-     
-  
+
+
 });
 
-router.delete('/api/items',function(req, res, next) {
-  Item.deleteMany(function(err, items) {
-      if (err) { return next(err); }
-      res.json({'message':'Items are now deleted.'});
+//delete all items
+router.delete('/api/user/:id/items', function (req, res, next) {
+  Item.deleteMany({user:req.params.id},function (err, items) {
+    if (err) { return next(err); }
+    res.json({ 'message': 'Items are now deleted.' });
   })
 });
 
 
+router.post('/api/user/:id/items', function (req, res, next) {
+  user = User.findById(req.params.id);
 
-module.exports = router;
+  var item = new Item({
+    name: req.body.name,
+    price: req.body.price,
+    category: req.body.category,
+
+    user: req.params.id
+  });
+  item.save(function (err, item) {
+    if (err) { return next(err); }
+    res.json(item);
+  });
+  User.findByIdAndUpdate(
+    req.params.id,
+    { $push: { "items": { _id: item._id } } },
+    { safe: true, upsert: true, new: true },
+    function (err, user) {
+      console.log(err);
+    });
+
+});
+
+
+//get a item
+router.get('/api/user/:id/items', function (req, res, next) {
+    
+  Item.find({ user: req.params.id }, function (err, item) {
+      if (!item) {
+
+          return res.status(404).json({
+              message: "There are no items"
+          });
+      }
+      res.status(200).json({ 'item': item });
+  }).populate([{
+      path: 'items._id',
+      model: 'Item'
+  },]).sort({price:1}).catch(err => {
+
+      res.status(500).json({ error: err });
+  });
+
+  
+
+  
+
+});
+
+
+
+
+
+// });
+module.exports = router

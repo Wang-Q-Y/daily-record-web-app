@@ -3,7 +3,8 @@
     <b-row>
       <div class="col-12 col-md-12">
         <div class="row" style="padding: 20px">
-          <div style="width: 100%"><br>
+          <div style="width: 100%">
+            <br />
             <h4><b>User</b></h4>
             <div style="width: 100%">
               <HtAlert
@@ -21,19 +22,19 @@
           </div>
 
           <div class="col-xs-12 col-md-12">
-            <HtTable :dataList="dataList" >
+            <HtTable :dataList="dataList">
               <template slot-scope="scope">
                 <td>{{ scope.row.name }}</td>
                 <td>{{ scope.row.email }}</td>
               </template> </HtTable
-            ><br>
-            <h4>items</h4><br>
+            ><br />
+            <h4>items</h4>
+            <br />
             <HtTable :dataList="itemList" :isOperate="true">
               <template slot-scope="scope">
                 <td>{{ scope.row.name }}</td>
                 <td>{{ scope.row.price }}</td>
                 <td>{{ scope.row.category }}</td>
-
               </template>
               <template slot="operate" slot-scope="scope">
                 <div style="display: flex; justify-content: center">
@@ -81,7 +82,6 @@ export default {
     this.getItemList()
   },
   methods: {
-
     getList() {
       Api.get('/users', {})
         .then((res) => {
@@ -96,9 +96,8 @@ export default {
         })
     },
 
-    deleteItem() {
-      const id = JSON.parse(localStorage.getItem('userInFo'))._id
-      Api.delete('/user/' + id + '/items', {})
+    deleteItem(e) {
+      Api.delete('/items/' + e._id, {})
         .then((res) => {
           this.getItemList()
         })
