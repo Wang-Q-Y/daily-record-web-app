@@ -17,7 +17,7 @@
           <b-avatar
             src="https://s2.loli.net/2022/10/05/tmrLkIqPJOEiDg9.jpg"
             class="center-block"
-            size="250px"
+            size="230px"
           ></b-avatar>
         </div>
         <div class="col-sm-8">
@@ -149,7 +149,7 @@ export default {
           this.alertShow = true
           this.alertText = 'The request is successful'
           this.getInFo()
-          this.$router.push('/api/login')
+          this.$router.push('/login')
         })
         .catch((err) => {
           console.log('err', err)

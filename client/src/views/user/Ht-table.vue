@@ -8,7 +8,7 @@
           <th v-if="isOperate">name</th>
           <th v-if="isOperate">price</th>
           <th v-if="isOperate">category</th>
-          <th v-if="isOperate">operate</th>
+          <!-- <th v-if="isOperate">operate</th> -->
         </tr>
       </thead>
       <tbody>

@@ -89,7 +89,7 @@ export default {
           localStorage.setItem('name', this.form.name)
           localStorage.setItem('password', this.form.password)
           localStorage.setItem('email', this.form.email)
-          this.$router.push('/api/login')
+          this.$router.push('/login')
         })
         .catch((err) => {
           console.log('err', err)

@@ -14,7 +14,7 @@ var bcrypt = require('bcryptjs');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 5000;
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
@@ -26,7 +26,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
     console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
-
 // Create Express app
 var app = express();
 // Parse requests of content-type 'application/json'
@@ -37,12 +36,6 @@ app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
-
-
-
-
-
-
 
 // Import routes
 app.get('/api', function(req, res) {

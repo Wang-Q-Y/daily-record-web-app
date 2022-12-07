@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     register() {
-      this.$router.push('/api/register')
+      this.$router.push('/register')
     },
     login() {
       Api.post('/login', this.form)

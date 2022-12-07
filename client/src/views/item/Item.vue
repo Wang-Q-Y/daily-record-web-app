@@ -64,7 +64,6 @@ export default {
       if (!this.$route.query.id && !localStorage.getItem('userInFo')) {
         return
       }
-      // Determine whether the user is currently logged in by user ID or click on the item by user
       const id =
         this.$route.query.id || JSON.parse(localStorage.getItem('userInFo'))._id
 

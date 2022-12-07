@@ -36,7 +36,7 @@
                 <td>{{ scope.row.price }}</td>
                 <td>{{ scope.row.category }}</td>
               </template>
-              <template slot="operate" slot-scope="scope">
+              <!-- <template slot="operate" slot-scope="scope">
                 <div style="display: flex; justify-content: center">
                   <button
                     type="button"
@@ -46,7 +46,8 @@
                     delete-item
                   </button>
                 </div>
-              </template> </HtTable
+              </template>  -->
+              </HtTable
             ><br />
           </div>
         </div>

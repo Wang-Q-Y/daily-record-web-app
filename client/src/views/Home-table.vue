@@ -4,14 +4,19 @@
       <thead class="label">
         <tr>
           <th>Item-name</th>
+          <th>Item-price</th>
+          <th>Item-category</th>
            <th>operate</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in dataList" :key="index">
-          <slot :row="item"></slot>
+          <td>{{item.name}}</td>
+          <td>{{item.price}}</td>
+          <td>{{item.category}}</td>
           <td class="operate">
-            <slot name="operate" :row="item"></slot>
+            <span v-if="item.total">total:{{item.total}}</span>
+            <slot v-else name="operate" :row="item"></slot>
           </td>
         </tr>
       </tbody>

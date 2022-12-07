@@ -11,7 +11,8 @@
     >
       {{ alertText }}
     </HtAlert>
-    <b-container class="group"><br>
+    <b-container class="group"
+      ><br />
       <h4>Items</h4>
       <div class="button-group">
         <button type="button" class="btn btn-outline-primary" @click="add()">
@@ -55,10 +56,13 @@
               </div>
               <div class="form-group">
                 <label for="name">category</label>
-                <b-form-select
+                <input
+                  type="text"
+                  class="form-control"
+                  id="category"
                   v-model="form.category"
-                  :options="options"
-                ></b-form-select>
+                  placeholder="category"
+                />
               </div>
               <div class="form-footer">
                 <button type="button" class="btn btn-primary" @click="submitOk">
@@ -72,17 +76,20 @@
           </div>
         </b-modal>
         <HomeTable :dataList="dataList">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <td>{{ scope.row.name }}</td>
           </template>
+          <template slot-scope="scope">
+            <td>{{ scope.row.price }}</td>
+          </template> -->
           <template slot="operate" slot-scope="scope">
             <div style="display: flex; justify-content: center">
               <button
                 type="button"
                 class="btn btn-primary btn-sm"
-                @click="showItem(scope.row)"
+                @click="deleteItem(scope.row)"
               >
-                show-item
+                delete
               </button>
             </div>
           </template> </HomeTable
@@ -129,7 +136,7 @@ export default {
       if (!localStorage.getItem('userInFo')) {
         this.variant = 'danger'
         this.alertShow = true
-        return this.$router.push('/api/login')
+        return this.$router.push('/login')
       }
       this.formTitle = 'add'
       this.show = true
@@ -138,14 +145,21 @@ export default {
       if (!this.$route.query.id && !localStorage.getItem('userInFo')) {
         return
       }
-      // Determine whether the user is currently logged in by user ID or click on the item by user
       const id =
         this.$route.query.id || JSON.parse(localStorage.getItem('userInFo'))._id
-
       Api.get('/user/' + id + '/items')
         .then((res) => {
           console.log(res)
           this.dataList = res.data.item
+          const totalList = this.dataList.map((e) => e.price)
+          if (totalList.length === 0) return
+          const total = totalList.reduce((total, price) => total + price)
+          this.dataList.push({
+            name: '',
+            price: '',
+            category: '',
+            total: total
+          })
         })
         .catch((err) => {
           console.log('err', err)
@@ -156,8 +170,7 @@ export default {
     },
     submitOk() {
       // this.show = false
-      const id =
-         JSON.parse(localStorage.getItem('userInFo'))._id
+      const id = JSON.parse(localStorage.getItem('userInFo'))._id
       Api.post('/user/' + id + '/items', this.form)
         .then((res) => {
           console.log(res)
@@ -179,14 +192,13 @@ export default {
       this.form = {}
     },
     showItem(e) {
-      this.$router.push({ path: '/api/item', query: { id: e._id } })
+      this.$router.push({ path: '/item', query: { id: e._id } })
     },
     delAll() {
       const id = JSON.parse(localStorage.getItem('userInFo'))._id
       if (!id) return
       Api.delete('/user/' + id + '/items')
         .then((res) => {
-          console.log(res)
           this.getList()
           this.variant = 'success'
           this.alertShow = true
@@ -194,10 +206,20 @@ export default {
           //  localStorage.removeItem('userInFo')
         })
         .catch((err) => {
-          console.log('err', err)
           this.variant = 'danger'
           this.alertShow = true
           this.alertText = err.data.message
+        })
+    },
+    deleteItem(e) {
+      Api.delete('/items/' + e._id, {})
+        .then((res) => {
+          this.getList()
+        })
+        .catch((err) => {
+          this.variant = 'danger'
+          this.alertShow = true
+          this.alertText = err.message
         })
     }
   }

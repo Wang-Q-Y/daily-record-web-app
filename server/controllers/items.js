@@ -1,4 +1,5 @@
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 const router = express.Router();
 const Item = require('../models/item');
 const User = require('../models/user')
@@ -71,23 +72,31 @@ router.post('/api/user/:id/items', function (req, res, next) {
 
 
 //get a item
-router.get('/api/user/:id/items', function (req, res, next) {
-    
-  Item.find({ user: req.params.id }, function (err, item) {
-      if (!item) {
-
-          return res.status(404).json({
-              message: "There are no items"
-          });
+router.get('/api/user/:id/items',async function (req, res, next) {
+  const data = await Item.aggregate([
+    {
+      $match:{
+        user:mongoose.Types.ObjectId(req.params.id)
       }
-      res.status(200).json({ 'item': item });
-  }).populate([{
-      path: 'items._id',
-      model: 'Item'
-  },]).sort({price:1}).catch(err => {
+    },
+    {
+      $sort:{price:1}
+    }
+  ])
+  res.json({item:data})
+  // Item.find({ user: req.params.id }, function (err, item) {
+  //   console.log(item,'sss')
+  //     if (!item) {
 
-      res.status(500).json({ error: err });
-  });
+  //         return res.status(404).json({
+  //             message: "There are no items"
+  //         });
+  //     }
+  //     res.status(200).json({ 'item': item });
+  // }).populate([{
+  //     path: 'items._id',
+  //     model: 'Item'
+  // },]).sort({price:1})
 
   
 
@@ -96,8 +105,4 @@ router.get('/api/user/:id/items', function (req, res, next) {
 });
 
 
-
-
-
-// });
 module.exports = router

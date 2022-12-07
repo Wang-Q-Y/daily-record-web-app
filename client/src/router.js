@@ -19,27 +19,27 @@ export default new Router({
       component: Home
     },
     {
-      path: '/api/register',
+      path: '/register',
       name: 'Register',
       component: Register
     },
     {
-      path: '/api/login',
+      path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/api/userInfo',
+      path: '/userInfo',
       name: 'Item',
       component: Userinfo
     },
     {
-      path: '/api/item',
+      path: '/item',
       name: 'Item',
       component: Item
     },
     {
-      path: '/api/user',
+      path: '/user',
       name: 'User',
       component: User
     }
