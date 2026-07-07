@@ -23,21 +23,6 @@ const createUser = Joi.object({
 
 
 
-
-
-
-//Register  User
-// router.post('/api/register', async(req, res)=>{
-//     const user =await User.create({
-//       name:req.body.name,
-//       password:req.body.password,
-//       email:req.body.email,
-//      
-//     })
-//       res.send(user)
-
-// })
-
 //Register a new user
 router.post('/api/register', function (req, res, next) {
     const { error } = createUser.validate(req.body)
@@ -52,59 +37,79 @@ router.post('/api/register', function (req, res, next) {
 })
 
 
-//Login a User
+// Login a user
 router.post('/api/login', async (req, res) => {
-    const user = await User.findOne({
-        name: req.body.name
-    })
-    if (!user) {
-        return res.status(402).send({
-            message: 'User does not exist'
-        })
-    }
-    const isPasswordVaild = require('bcrypt').compareSync(
-        req.body.password,
-        user.password
-    )
-    if (!isPasswordVaild) {
-        return res.status(402).send({
-            message: 'Invalid password'
-        })
-    }
-
-    //token
-    const token = jwt.sign({
-        '_id': user._id,
-    },
-        process.env.JWT_KEY,//private key
-        {
-            expiresIn: "1h"
-        });
-    res.send({
-        user,
-        token
-    })
-})
-//verify user id
-router.get('/api/users/verify', async (req, res) => {
-
     try {
-        const token = String(req.headers.authorization.split(' ').pop())
+        const user = await User.findOne({ name: req.body.name });
 
-        const { id } = jwt.verify(token, process.env.JWT_KEY)
-        req.user = await User.findById(id)
-
-        if ({ id }) {
-            res.json(true);
-        } else {
-            res.json("invaild token");
+        if (!user) {
+            return res.status(401).json({
+                message: 'User does not exist'
+            });
         }
+
+        const isPasswordValid = bcrypt.compareSync(
+            req.body.password,
+            user.password
+        );
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: 'Invalid password'
+            });
+        }
+
+        const token = jwt.sign(
+            { _id: user._id },
+            process.env.JWT_KEY,
+            { expiresIn: '1h' }
+        );
+
+        res.json({
+            user,
+            token
+        });
     } catch (error) {
-        res.status(500).json({ err: error.message });
+        res.status(500).json({
+            message: error.message
+        });
     }
-    // res.send(req.user) 
-})
-//res.send(user)
+});
+
+// Verify token
+router.get('/api/users/verify', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader) {
+            return res.status(401).json({
+                message: 'No token provided'
+            });
+        }
+
+        const token = authHeader.split(' ').pop();
+
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+        const user = await User.findById(decoded._id);
+
+        if (!user) {
+            return res.status(401).json({
+                message: 'Invalid token: user not found'
+            });
+        }
+
+        res.json({
+            valid: true,
+            userId: user._id
+        });
+    } catch (error) {
+        res.status(401).json({
+            message: 'Invalid or expired token'
+        });
+    }
+});
+
 
 //get all users
 router.get('/api/users', function (req, res, next) {
@@ -127,35 +132,36 @@ router.get('/api/user/:id', function (req, res, next) {
 });
 
 //test
-router.put("/api/users/:id", (req, res, next) => {
-    var id = req.params.id;
-    User.findById(id, function (err, user) {
-        if (err) { return next(err); }
-        if (user == null) {
-            return res.status(404).json({ "message": "User not found" });
+router.put('/api/users/:id', async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
-        user.email = req.body.email
 
-        bcrypt.hash(req.body.password, 10, function (err, hash) {
+        if (req.body.email) {
+            user.email = req.body.email;
+        }
 
-            if (err) {
-                var err = new Error("password cannot be reset");
-                err.status = 500;
-                return next(err);
-            } else {
-                user.password = hash
+        if (req.body.password) {
+            user.password = req.body.password; 
+    
+        }
+
+        await user.save();
+
+        res.json({
+            message: 'User updated successfully',
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email
             }
-            user.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    res.status(400).send('Something went wrong');
-                } else {
-                    res.json(user);
-                }
-            });
-        })
-
-    });
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 
