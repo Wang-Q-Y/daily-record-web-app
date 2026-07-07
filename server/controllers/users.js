@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require('express')
 const Joi = require('joi')
-const router = express.Router();
-const User = require('../models/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-//const {verify} = require("../middleware/verify");
-const Item = require('../models/item');
+const router = express.Router()
+const User = require('../models/user')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const Item = require('../models/item')
 
 const createUser = Joi.object({
     name: Joi.string()
@@ -17,171 +16,220 @@ const createUser = Joi.object({
         .max(20)
         .required(),
     email: Joi.string()
-
+        .email()
         .required()
-});
+})
 
+const loginUser = Joi.object({
+    name: Joi.string()
+        .alphanum()
+        .max(50)
+        .required(),
+    password: Joi.string()
+        .alphanum()
+        .max(20)
+        .required(),
+    email: Joi.string()
+        .email()
+        .required()
+})
 
+const updateUser = Joi.object({
+    email: Joi.string().email(),
+    password: Joi.string().alphanum().max(20)
+}).min(1)
 
-//Register a new user
-router.post('/api/register', function (req, res, next) {
-    const { error } = createUser.validate(req.body)
-    if (error) {
-        return res.status(400).json({ "message": error.details[0].message })
+const sanitizeUser = function (user) {
+    return {
+        _id: user._id,
+        name: user.name,
+        email: user.email
     }
-    var user = new User(req.body);
-    user.save(function (err, user) {
-        if (err) { return next(err); }
-        res.status(201).json(user);
+}
+
+const verifyToken = async function (req, res, next) {
+    try {
+        const authHeader = req.headers.authorization
+
+        if (!authHeader) {
+            return res.status(401).json({ message: 'No token provided' })
+        }
+
+        const token = authHeader.split(' ').pop()
+        const decoded = jwt.verify(token, process.env.JWT_KEY)
+
+        const user = await User.findById(decoded._id)
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid token: user not found' })
+        }
+
+        req.user = user
+        next()
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid or expired token' })
+    }
+}
+
+// Register a new user
+router.post('/api/register', function (req, res, next) {
+    const result = createUser.validate(req.body)
+
+    if (result.error) {
+        return res.status(400).json({ message: result.error.details[0].message })
+    }
+
+    const user = new User(req.body)
+
+    user.save(function (err, savedUser) {
+        if (err) {
+            if (err.code === 11000) {
+                return res.status(409).json({ message: 'This username is already taken' })
+            }
+
+            return next(err)
+        }
+
+        res.status(201).json(sanitizeUser(savedUser))
     })
 })
 
-
 // Login a user
-router.post('/api/login', async (req, res) => {
+router.post('/api/login', async function (req, res) {
     try {
-        const user = await User.findOne({ name: req.body.name });
+        const result = loginUser.validate(req.body)
+
+        if (result.error) {
+            return res.status(400).json({
+                message: result.error.details[0].message
+            })
+        }
+
+        const user = await User.findOne({ name: req.body.name })
 
         if (!user) {
             return res.status(401).json({
-                message: 'User does not exist'
-            });
+                message: 'Username does not exist'
+            })
+        }
+
+        if (user.email !== req.body.email) {
+            return res.status(401).json({
+                message: 'Email does not match this username'
+            })
         }
 
         const isPasswordValid = bcrypt.compareSync(
             req.body.password,
             user.password
-        );
+        )
 
         if (!isPasswordValid) {
             return res.status(401).json({
-                message: 'Invalid password'
-            });
+                message: 'Incorrect password'
+            })
         }
 
         const token = jwt.sign(
             { _id: user._id },
             process.env.JWT_KEY,
             { expiresIn: '1h' }
-        );
+        )
 
         res.json({
-            user,
-            token
-        });
+            user: sanitizeUser(user),
+            token: token
+        })
     } catch (error) {
         res.status(500).json({
             message: error.message
-        });
+        })
     }
-});
+})
 
 // Verify token
-router.get('/api/users/verify', async (req, res) => {
-    try {
-        const authHeader = req.headers.authorization;
+router.get('/api/users/verify', verifyToken, async function (req, res) {
+    res.json({
+        valid: true,
+        user: sanitizeUser(req.user)
+    })
+})
 
-        if (!authHeader) {
-            return res.status(401).json({
-                message: 'No token provided'
-            });
+// Get current logged-in user
+router.get('/api/users/me', verifyToken, async function (req, res) {
+    res.json(sanitizeUser(req.user))
+})
+
+// Update current logged-in user
+router.put('/api/users/me', verifyToken, async function (req, res, next) {
+    try {
+        const result = updateUser.validate(req.body)
+
+        if (result.error) {
+            return res.status(400).json({ message: result.error.details[0].message })
         }
 
-        const token = authHeader.split(' ').pop();
-
-        const decoded = jwt.verify(token, process.env.JWT_KEY);
-
-        const user = await User.findById(decoded._id);
+        const user = await User.findById(req.user._id)
 
         if (!user) {
-            return res.status(401).json({
-                message: 'Invalid token: user not found'
-            });
-        }
-
-        res.json({
-            valid: true,
-            userId: user._id
-        });
-    } catch (error) {
-        res.status(401).json({
-            message: 'Invalid or expired token'
-        });
-    }
-});
-
-
-//get all users
-router.get('/api/users', function (req, res, next) {
-    User.find(function (err, user) {
-        if (err) { return next(err); }
-        res.json({ 'users': user });
-    });
-});
-
-//get a user
-router.get('/api/user/:id', function (req, res, next) {
-    var id = req.params.id;
-    User.findById(id, function (err, user) {
-        if (err) { return next(err); }
-        if (user === null) {
-            return res.status(404).json({ 'message': 'User not found!' });
-        }
-        res.json(user);
-    });
-});
-
-//test
-router.put('/api/users/:id', async (req, res, next) => {
-    try {
-        const user = await User.findById(req.params.id);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' })
         }
 
         if (req.body.email) {
-            user.email = req.body.email;
+            user.email = req.body.email
         }
 
         if (req.body.password) {
-            user.password = req.body.password; 
-    
+            user.password = req.body.password
         }
 
-        await user.save();
+        await user.save()
 
         res.json({
-            message: 'User updated successfully',
-            user: {
-                _id: user._id,
-                name: user.name,
-                email: user.email
-            }
-        });
+            message: 'User updated successfully. Please log in again.',
+            requireRelogin: true
+        })
     } catch (error) {
-        next(error);
+        next(error)
     }
-});
+})
 
+// Block public access to all users
+router.get('/api/users', verifyToken, function (req, res) {
+    res.status(403).json({
+        message: 'Access denied. Users can only access their own profile.'
+    })
+})
 
+// Block access by user id
+router.get('/api/user/:id', verifyToken, function (req, res) {
+    res.status(403).json({
+        message: 'Access denied. Please use /api/users/me.'
+    })
+})
 
+// Block update by user id
+router.put('/api/users/:id', verifyToken, function (req, res) {
+    res.status(403).json({
+        message: 'Access denied. Please use /api/users/me.'
+    })
+})
 
-
-
-//detele a user
-router.delete('/api/user/:id', function (req, res, next) {
-    var id = req.params.id;
-    User.findOneAndDelete({ _id: id }, function (err, user) {
-        if (err) { return next(err); }
-        Item.deleteMany({ user: req.params.id })
-        if (user === null) {
-            return res.status(404).json({ 'message': 'User not found' });
+// Delete current logged-in user
+router.delete('/api/users/me', verifyToken, function (req, res, next) {
+    User.findOneAndDelete({ _id: req.user._id }, function (err, user) {
+        if (err) {
+            return next(err)
         }
-        res.json({ 'message': 'user deleted.' });
-    });
-});
 
+        if (user === null) {
+            return res.status(404).json({ message: 'User not found' })
+        }
 
+        Item.deleteMany({ user: req.user._id }).exec()
 
-module.exports = router;
+        res.json({ message: 'User deleted.' })
+    })
+})
+
+module.exports = router

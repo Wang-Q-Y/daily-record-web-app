@@ -12,6 +12,7 @@
       >
         {{ alertText }}
       </HtAlert>
+
       <div class="row">
         <div class="col-sm-4">
           <b-avatar
@@ -20,47 +21,62 @@
             size="230px"
           ></b-avatar>
         </div>
+
         <div class="col-sm-8">
           <h4><b>Profile</b></h4>
+
           <div class="input">
             Name:
             <b-form-input
               type="text"
               v-model="userinfo.name"
-              :disabled="!isEditing"
-            ></b-form-input
-            ><br />
+              disabled
+            ></b-form-input>
+
+            <br />
+
             <b-form @submit.stop.prevent>
-              <label for="text-password">Password:</label>
+              <label for="text-password">New Password:</label>
               <b-input
                 type="password"
                 id="text-password"
-                v-model="userinfo.password"
+                v-model="newPassword"
                 aria-describedby="password-help-block"
                 :disabled="!isEditing"
-              ></b-input
-              ><br />
+                placeholder="Leave blank if you do not want to change it"
+              ></b-input>
+
+              <br />
             </b-form>
+
             Email:
             <b-form-input
               type="text"
               v-model="userinfo.email"
               :disabled="!isEditing"
-            ></b-form-input
-            ><br />
+            ></b-form-input>
+
+            <br />
           </div>
-          <b-button variant="info" @click="editing" v-if="!isEditing"
-            >Edit
+
+          <b-button variant="info" @click="editing" v-if="!isEditing">
+            Edit
           </b-button>
+
           <b-button
-            @click="save(userinfo._id)"
+            @click="save"
             v-else-if="isEditing"
             variant="success"
-            >Save</b-button
           >
-          <b-button v-if="isEditing" @click="cancel">Cancel</b-button>
-          <b-button variant="danger" @click="deleteUser(userinfo._id)"
-            >log out
+            Save
+          </b-button>
+
+          <b-button v-if="isEditing" @click="cancel">
+            Cancel
+          </b-button>
+
+          <b-button variant="danger" @click="logout">
+            log out
           </b-button>
         </div>
       </div>
@@ -70,19 +86,19 @@
 
 <script>
 import { Api } from '../Api'
+
 export default {
   name: 'Userinfo',
   data() {
     return {
-      user: {},
       isEditing: false,
       alertShow: false,
       variant: 'success',
       alertText: '',
+      newPassword: '',
       userinfo: {
         name: '',
-        email: '',
-        password: ''
+        email: ''
       }
     }
   },
@@ -90,84 +106,95 @@ export default {
     this.getInFo()
   },
   methods: {
-    getInFo() {
-      if (!localStorage.getItem('userInFo')) {
-        return
+    getErrorMessage(err, defaultMessage) {
+      if (err && err.response && err.response.data && err.response.data.message) {
+        return err.response.data.message
       }
-      const id = JSON.parse(localStorage.getItem('userInFo'))._id
-      Api.get('/user/' + id)
+      return defaultMessage
+    },
+
+    getInFo() {
+      Api.get('/users/me')
         .then((res) => {
-          console.log('get information', res)
           this.variant = 'success'
           this.alertShow = true
-          this.alertText = 'The request is successful'
-          console.log(res.data)
+          this.alertText = 'User profile loaded successfully'
           this.userinfo = res.data
-          this.userinfo.password = localStorage.getItem('password')
+          this.newPassword = ''
         })
         .catch((err) => {
           console.log('err', err)
           this.variant = 'danger'
           this.alertShow = true
-          this.alertText = 'No user,cannot get user profile'
-        })
-    },
-    editing() {
-      this.isEditing = !this.isEditing
-    },
-    cancel() {
-      this.isEditing = !this.isEditing
-      this.getInFo()
-    },
-    save() {
-      const id = JSON.parse(localStorage.getItem('userInFo'))._id
-      Api.put('/users/' + id, this.userinfo)
-        .then((res) => {
-          console.log(res)
-          this.isEditing = !this.isEditing
-          this.variant = 'success'
-          this.alertShow = true
-          this.alertText = 'The request is successful'
-          this.getInFo()
-          localStorage.setItem('password', this.userinfo.password)
-        })
-        .catch((err) => {
-          console.log('err', err)
-          this.variant = 'danger'
-          this.alertShow = true
-          this.alertText = err.data.message
+          this.alertText = this.getErrorMessage(
+            err,
+            'Cannot get user profile'
+          )
         })
     },
 
-    deleteUser(id) {
-      Api.delete('/user/' + id)
+    editing() {
+      this.isEditing = true
+    },
+
+    cancel() {
+      this.isEditing = false
+      this.newPassword = ''
+      this.getInFo()
+    },
+
+    save() {
+      const payload = {
+        email: this.userinfo.email
+      }
+
+      if (this.newPassword) {
+        payload.password = this.newPassword
+      }
+
+      Api.put('/users/me', payload)
         .then((res) => {
-          localStorage.clear()
           console.log(res)
-          this.isEditing = !this.isEditing
+
           this.variant = 'success'
           this.alertShow = true
-          this.alertText = 'The request is successful'
-          this.getInFo()
-          this.$router.push('/login')
+          this.alertText = 'Profile updated successfully. Please log in again.'
+
+          localStorage.removeItem('token')
+          localStorage.removeItem('userInFo')
+          localStorage.removeItem('password')
+
+          window.dispatchEvent(new Event('auth-change'))
+
+          setTimeout(() => {
+            this.$router.replace('/login')
+          }, 1000)
         })
         .catch((err) => {
           console.log('err', err)
           this.variant = 'danger'
           this.alertShow = true
-          this.alertText = err.data.message
+          this.alertText = this.getErrorMessage(
+            err,
+            'Unable to update profile'
+          )
         })
+    },
+
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInFo')
+      localStorage.removeItem('password')
+
+      window.dispatchEvent(new Event('auth-change'))
+
+      this.$router.replace('/login')
     }
   }
 }
 </script>
 
-<style >
-/* @media only screen and (min-device-width: 360px) and (max-device-height: 768px) {
-  .center-block {
-    width: 50%;
-  }
-} */
+<style>
 .row {
   padding: 20px;
 }

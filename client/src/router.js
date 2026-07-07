@@ -9,39 +9,79 @@ import User from './views/user/User.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      meta: {
+        guestOnly: true
+      }
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        guestOnly: true
+      }
     },
     {
       path: '/userInfo',
-      name: 'Item',
-      component: Userinfo
+      name: 'Userinfo',
+      component: Userinfo,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/item',
       name: 'Item',
-      component: Item
+      component: Item,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/user',
       name: 'User',
-      component: User
+      component: User,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
+
+router.beforeEach(function (to, from, next) {
+  const isLoggedIn = !!localStorage.getItem('token')
+
+  if (to.matched.some(function (record) {
+    return record.meta.requiresAuth
+  }) && !isLoggedIn) {
+    next('/login')
+    return
+  }
+
+  if (to.matched.some(function (record) {
+    return record.meta.guestOnly
+  }) && isLoggedIn) {
+    next('/')
+    return
+  }
+
+  next()
+})
+
+export default router
