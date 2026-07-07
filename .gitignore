@@ -178,3 +178,4 @@ $RECYCLE.BIN/
 .env
 .idea/
 server/controllers/users.backup.js
+server/.env
