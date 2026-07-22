@@ -1,15 +1,11 @@
 <template>
   <div id="background">
-    <b-row>
-      <b-col xs="12" xl="12">
+    <b-row class="alert-row">
+      <b-col cols="12">
         <HtAlert
           :show="alertShow"
           :variant="variant"
-          @close="
-            (val) => {
-              this.alertShow = val
-            }
-          "
+          @close="alertShow = $event"
         >
           {{ alertText }}
         </HtAlert>
@@ -22,56 +18,65 @@
 
         <b-row>
           <b-form-row style="width: 100%">
-            <b-col cols="12" sm="12" md="12">
-              Name:
+            <b-col cols="12">
+              <label for="name">Name:</label>
+
               <b-form-input
-                type="text"
-                v-model="form.name"
                 id="name"
+                v-model="form.name"
+                type="text"
                 placeholder="Enter name"
               ></b-form-input>
+
               <br />
             </b-col>
 
-            <b-col cols="12" sm="12" md="12">
+            <b-col cols="12">
               <b-form @submit.stop.prevent>
                 <label for="password">Password:</label>
+
                 <b-input
-                  type="password"
                   id="password"
                   v-model="form.password"
+                  type="password"
                   aria-describedby="password-help-block"
                   placeholder="Enter password"
                 ></b-input>
+
                 <br />
               </b-form>
             </b-col>
 
-            <b-col cols="12" sm="12" md="12">
-              Email:
+            <b-col cols="12">
+              <label for="email">Email:</label>
+
               <b-form-input
-                type="email"
-                v-model="form.email"
                 id="email"
+                v-model="form.email"
+                type="email"
                 placeholder="Enter email"
               ></b-form-input>
+
               <br />
             </b-col>
           </b-form-row>
         </b-row>
 
-        <b-button
-          id="button"
-          class="btn_submit"
-          variant="primary"
-          @click.prevent="signup"
-        >
-          register
-        </b-button>
+        <div class="form-footer">
+          <b-button
+            class="register-button"
+            variant="primary"
+            @click.prevent="signup"
+          >
+            Register
+          </b-button>
 
-        <div style="margin-top: 15px">
-          Already have an account?
-          <a href="#" @click.prevent="$router.push('/login')">Login here</a>
+          <div class="login-link">
+            Already have an account?
+            <a href="#" @click.prevent="$router.push('/login')">
+              Login here
+            </a>
+          </div>
         </div>
       </b-container>
     </div>
@@ -83,6 +88,7 @@ import { Api } from '../Api'
 
 export default {
   name: 'Register',
+
   data() {
     return {
       form: {
@@ -95,9 +101,15 @@ export default {
       alertText: ''
     }
   },
+
   methods: {
     getErrorMessage(err) {
-      if (err && err.response && err.response.data && err.response.data.message) {
+      if (
+        err &&
+        err.response &&
+        err.response.data &&
+        err.response.data.message
+      ) {
         return err.response.data.message
       }
 
@@ -142,6 +154,7 @@ export default {
         })
         .catch((err) => {
           console.log('register error', err)
+
           this.variant = 'danger'
           this.alertShow = true
           this.alertText = this.getErrorMessage(err)
@@ -151,33 +164,74 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #background {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   background: url('../assets/res.jpeg');
-  background-size: 100% 100%;
+  background-size: cover;
+  background-position: center;
   position: fixed;
   top: 0;
   left: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-#button {
-  position: relative;
-  margin-top: 30px;
-  text-align: center;
-  margin-left: 1.5%;
-  font-size: 25px;
+.alert-row {
+  width: 90%;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 #signup {
+  width: 90%;
+  max-width: 760px;
   background: white;
-  padding: 60px;
-  padding-top: 20px;
+  padding: 20px 60px 50px;
   border-radius: 10px;
+  box-sizing: border-box;
+}
+
+#signup h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-footer {
+  width: 100%;
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-button {
+  width: 130px;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 20px;
+  box-shadow: none;
+}
+
+.login-link {
+  margin-top: 18px;
+  text-align: center;
+}
+
+@media (max-width: 576px) {
+  #signup {
+    width: 92%;
+    padding: 20px 25px 35px;
+  }
+
+  .register-button {
+    width: 100%;
+  }
 }
 </style>

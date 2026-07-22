@@ -1,15 +1,11 @@
 <template>
   <div id="background">
-    <b-row>
-      <b-col xs="12" xl="12">
+    <b-row class="alert-row">
+      <b-col cols="12">
         <HtAlert
           :show="alertShow"
           :variant="variant"
-          @close="
-            (val) => {
-              this.alertShow = val
-            }
-          "
+          @close="alertShow = $event"
         >
           {{ alertText }}
         </HtAlert>
@@ -22,61 +18,67 @@
 
         <b-row>
           <b-form-row style="width: 100%">
-            <b-col xs="12" xl="12">
-              Name:
+            <b-col cols="12">
+              <label for="name">Name:</label>
+
               <b-form-input
-                type="text"
-                v-model="form.name"
                 id="name"
+                v-model="form.name"
+                type="text"
                 placeholder="Enter name"
               ></b-form-input>
-              <br>
+
+              <br />
             </b-col>
 
-            <b-col xs="12" xl="12">
+            <b-col cols="12">
               <b-form @submit.stop.prevent>
                 <label for="text-password">Password:</label>
+
                 <b-input
-                  type="password"
                   id="text-password"
                   v-model="form.password"
+                  type="password"
                   aria-describedby="password-help-block"
                   placeholder="Enter password"
                 ></b-input>
-                <br>
+
+                <br />
               </b-form>
             </b-col>
 
-            <b-col xs="12" xl="12">
-              Email:
+            <b-col cols="12">
+              <label for="email">Email:</label>
+
               <b-form-input
-                type="email"
-                v-model="form.email"
                 id="email"
+                v-model="form.email"
+                type="email"
                 placeholder="Enter email"
               ></b-form-input>
-              <br>
+
+              <br />
             </b-col>
           </b-form-row>
         </b-row>
 
-        <b-button
-          id="button"
-          class="btn_submit"
-          variant="primary"
-          @click.prevent="login"
-        >
-          Login
-        </b-button>
+        <div class="button-container">
+          <b-button
+            class="action-button"
+            variant="primary"
+            @click.prevent="login"
+          >
+            Login
+          </b-button>
 
-        <b-button
-          id="button"
-          class="btn_signup"
-          variant="primary"
-          @click.prevent="register"
-        >
-          register
-        </b-button>
+          <b-button
+            class="action-button"
+            variant="primary"
+            @click.prevent="register"
+          >
+            Register
+          </b-button>
+        </div>
       </b-container>
     </div>
   </div>
@@ -87,6 +89,7 @@ import { Api } from '../Api'
 
 export default {
   name: 'Login',
+
   data() {
     return {
       form: {
@@ -100,9 +103,15 @@ export default {
       alertText: ''
     }
   },
+
   methods: {
     getErrorMessage(err) {
-      if (err && err.response && err.response.data && err.response.data.message) {
+      if (
+        err &&
+        err.response &&
+        err.response.data &&
+        err.response.data.message
+      ) {
         return err.response.data.message
       }
 
@@ -134,7 +143,10 @@ export default {
           this.token = res.data.token
 
           localStorage.setItem('token', this.token)
-          localStorage.setItem('userInFo', JSON.stringify(res.data.user))
+          localStorage.setItem(
+            'userInFo',
+            JSON.stringify(res.data.user)
+          )
 
           window.dispatchEvent(new Event('auth-change'))
 
@@ -142,6 +154,7 @@ export default {
         })
         .catch((err) => {
           console.log('login error', err)
+
           this.variant = 'danger'
           this.alertShow = true
           this.alertText = this.getErrorMessage(err)
@@ -151,36 +164,73 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #background {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
   background: url('../assets/login.jpeg');
-  background-size: 100% 100%;
+  background-size: cover;
+  background-position: center;
   position: fixed;
   top: 0;
   left: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-#button {
-  position: relative;
-  height: 50px;
-  width: 120px;
-  border-radius: 10px;
-  margin-top: 18px;
-  box-shadow: none;
-  margin-left: 40px;
-  margin-right: 10px;
+.alert-row {
+  width: 90%;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .login {
+  width: 90%;
+  max-width: 760px;
   background: white;
-  padding: 60px;
-  padding-top: 20px;
+  padding: 20px 60px 50px;
   border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.login h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  width: 100%;
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.action-button {
+  width: 120px;
+  height: 50px;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+@media (max-width: 576px) {
+  .login {
+    width: 92%;
+    padding: 20px 25px 35px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-button {
+    width: 100%;
+  }
 }
 </style>
