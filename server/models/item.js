@@ -1,18 +1,36 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
 
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema
 
 var itemSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
 
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+
   category: {
     type: String,
-    types: ['Burger', 'Pasta', 'Drink'],
-    required: true
+    required: true,
+    trim: true
   },
-  
-  user: { type: mongoose.Schema.Types.ObjectId, required: true }
+
+  date: {
+    type: Date,
+    default: Date.now
+  },
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 })
 
-module.exports = mongoose.model('Item', itemSchema);
+module.exports = mongoose.model('Item', itemSchema)

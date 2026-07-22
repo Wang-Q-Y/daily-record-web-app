@@ -37,6 +37,7 @@
 import HtTable from './Ht-table'
 import { Api } from '../../Api'
 import HtAlert from '@/components/Ht-alert'
+
 export default {
   name: 'Item',
   components: { HtTable, HtAlert },
@@ -56,27 +57,30 @@ export default {
     }
   },
   mounted() {
-    // when the page finishes loading
+    // Load the selected item when the page is ready.
     this.getList()
   },
   methods: {
     getList() {
-      if (!this.$route.query.id && !localStorage.getItem('userInFo')) {
+      const itemId = this.$route.query.id
+      const token = localStorage.getItem('token')
+
+      if (!token || !itemId) {
         return
       }
-      const id =
-        this.$route.query.id || JSON.parse(localStorage.getItem('userInFo'))._id
 
-      Api.get('items/' + id)
+      Api.get('/items/' + itemId)
         .then((res) => {
-          console.log(res, 'www')
           this.dataList = [res.data]
         })
         .catch((err) => {
           console.log('err', err)
           this.variant = 'danger'
           this.alertShow = true
-          this.alertText = err.message
+          this.alertText =
+            err && err.response && err.response.data && err.response.data.message
+              ? err.response.data.message
+              : 'Unable to load item'
         })
     }
   }

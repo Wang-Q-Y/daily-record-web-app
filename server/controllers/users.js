@@ -5,6 +5,7 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Item = require('../models/item')
+const verifyToken = require('../middleware/auth')
 
 const createUser = Joi.object({
     name: Joi.string()
@@ -44,30 +45,6 @@ const sanitizeUser = function (user) {
         _id: user._id,
         name: user.name,
         email: user.email
-    }
-}
-
-const verifyToken = async function (req, res, next) {
-    try {
-        const authHeader = req.headers.authorization
-
-        if (!authHeader) {
-            return res.status(401).json({ message: 'No token provided' })
-        }
-
-        const token = authHeader.split(' ').pop()
-        const decoded = jwt.verify(token, process.env.JWT_KEY)
-
-        const user = await User.findById(decoded._id)
-
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid token: user not found' })
-        }
-
-        req.user = user
-        next()
-    } catch (error) {
-        return res.status(401).json({ message: 'Invalid or expired token' })
     }
 }
 

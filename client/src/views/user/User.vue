@@ -81,6 +81,20 @@ export default {
       return defaultMessage
     },
 
+    isAuthError(err) {
+      return !!(err && err.response && (err.response.status === 401 || err.response.status === 403))
+    },
+
+    redirectToLogin() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInFo')
+      localStorage.removeItem('password')
+
+      window.dispatchEvent(new Event('auth-change'))
+
+      this.$router.replace('/login')
+    },
+
     getCurrentUser() {
       Api.get('/users/me')
         .then((res) => {
@@ -88,6 +102,12 @@ export default {
         })
         .catch((err) => {
           console.log('err', err)
+
+          if (this.isAuthError(err)) {
+            this.redirectToLogin()
+            return
+          }
+
           this.variant = 'danger'
           this.alertShow = true
           this.alertText = this.getErrorMessage(
@@ -104,12 +124,18 @@ export default {
         return
       }
 
-      Api.get('/user/' + userInfo._id + '/items')
+      Api.get('/items')
         .then((res) => {
           this.itemList = res.data.item
         })
         .catch((err) => {
           console.log('err', err)
+
+          if (this.isAuthError(err)) {
+            this.redirectToLogin()
+            return
+          }
+
           this.variant = 'danger'
           this.alertShow = true
           this.alertText = this.getErrorMessage(

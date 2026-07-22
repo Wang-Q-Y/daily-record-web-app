@@ -1,108 +1,115 @@
-const express = require('express');
-const { default: mongoose } = require('mongoose');
-const router = express.Router();
-const Item = require('../models/item');
-const User = require('../models/user')
+const express = require('express')
+const router = express.Router()
+const Item = require('../models/item')
+const verifyToken = require('../middleware/auth')
 
+// Get all items belonging to the currently logged-in user
+router.get('/api/items', verifyToken, async function (req, res, next) {
+  try {
+    const items = await Item.find({ user: req.user._id }).sort({ date: -1 })
+    res.json({ item: items })
+  } catch (error) {
+    next(error)
+  }
+})
 
+// Get one item, but only if it belongs to the logged-in user
+router.get('/api/items/:id', verifyToken, async function (req, res, next) {
+  try {
+    const item = await Item.findOne({
+      _id: req.params.id,
+      user: req.user._id
+    })
 
-
-
-
-
-
-//get a item
-router.get('/api/items/:id', function (req, res, next) {
-  Item.findById(req.params.id, function (err, item) {
-    if (err) { return next(err); }
     if (!item) {
-      return res.status(404).json({ 'message': 'Item not found!' });
+      return res.status(404).json({ message: 'Item not found!' })
     }
-    res.json(item);
-  });
-});
 
+    res.json(item)
+  } catch (error) {
+    next(error)
+  }
+})
 
-//delete a item
-router.delete('/api/items/:id', function (req, res, next) {
+// Create an item for the currently logged-in user
+router.post('/api/items', verifyToken, async function (req, res, next) {
+  try {
+    const item = new Item({
+      name: req.body.name,
+      price: req.body.price,
+      category: req.body.category,
+      date: req.body.date || Date.now(),
+      user: req.user._id
+    })
 
-  Item.findByIdAndRemove(req.params.id, req.body, function (err, item) {
-    if (err) { return next(err); }
-    if (!item) {
-      return res.status(404).json({ 'message': 'Item not found!' });
-    }
-    res.json({ 'message': 'item deleted' });
-  });
+    const savedItem = await item.save()
+    res.status(201).json(savedItem)
+  } catch (error) {
+    next(error)
+  }
+})
 
+// Update one item, but only if it belongs to the logged-in user
+router.put('/api/items/:id', verifyToken, async function (req, res, next) {
+  try {
+    const updateData = {}
 
-});
+    if (req.body.name !== undefined) updateData.name = req.body.name
+    if (req.body.price !== undefined) updateData.price = req.body.price
+    if (req.body.category !== undefined) updateData.category = req.body.category
+    if (req.body.date !== undefined) updateData.date = req.body.date
 
-//delete all items
-router.delete('/api/user/:id/items', function (req, res, next) {
-  Item.deleteMany({user:req.params.id},function (err, items) {
-    if (err) { return next(err); }
-    res.json({ 'message': 'Items are now deleted.' });
-  })
-});
-
-
-router.post('/api/user/:id/items', function (req, res, next) {
-  user = User.findById(req.params.id);
-
-  var item = new Item({
-    name: req.body.name,
-    price: req.body.price,
-    category: req.body.category,
-
-    user: req.params.id
-  });
-  item.save(function (err, item) {
-    if (err) { return next(err); }
-    res.json(item);
-  });
-  User.findByIdAndUpdate(
-    req.params.id,
-    { $push: { "items": { _id: item._id } } },
-    { safe: true, upsert: true, new: true },
-    function (err, user) {
-      console.log(err);
-    });
-
-});
-
-
-//get a item
-router.get('/api/user/:id/items',async function (req, res, next) {
-  const data = await Item.aggregate([
-    {
-      $match:{
-        user:mongoose.Types.ObjectId(req.params.id)
+    const item = await Item.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        user: req.user._id
+      },
+      updateData,
+      {
+        new: true,
+        runValidators: true
       }
-    },
-    {
-      $sort:{price:1}
+    )
+
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found!' })
     }
-  ])
-  res.json({item:data})
-  // Item.find({ user: req.params.id }, function (err, item) {
-  //   console.log(item,'sss')
-  //     if (!item) {
 
-  //         return res.status(404).json({
-  //             message: "There are no items"
-  //         });
-  //     }
-  //     res.status(200).json({ 'item': item });
-  // }).populate([{
-  //     path: 'items._id',
-  //     model: 'Item'
-  // },]).sort({price:1})
+    res.json({
+      message: 'Item updated successfully',
+      item: item
+    })
+  } catch (error) {
+    next(error)
+  }
+})
 
-  
+// Delete one item, but only if it belongs to the logged-in user
+router.delete('/api/items/:id', verifyToken, async function (req, res, next) {
+  try {
+    const item = await Item.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user._id
+    })
 
-  
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found!' })
+    }
 
-});
+    res.json({ message: 'Item deleted' })
+  } catch (error) {
+    next(error)
+  }
+})
 
+// Delete all items belonging to the currently logged-in user
+router.delete('/api/items', verifyToken, async function (req, res, next) {
+  try {
+    await Item.deleteMany({ user: req.user._id })
+    res.json({ message: 'Items are now deleted.' })
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router
